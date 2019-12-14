@@ -42,6 +42,7 @@ def videochat():
 def payment():
     return render_template('payment.html')
 
+# 進むコマンド
 @app.route("/serial", methods=['GET'])
 def serial():
     return serialio.send("F\n")
