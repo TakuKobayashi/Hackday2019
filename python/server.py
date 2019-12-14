@@ -59,6 +59,28 @@ def products_images(path):
     fullpath = "./images/mst/" + path
     return send_file(fullpath, mimetype='image/png')
 
+@app.route('/pay/product/<string:product_id>', methods=['GET'])
+def pay_product(product_id):
+    mst_dics_list = csvreader.loadMasterData()
+    product = None
+    for mst_product in mst_dics_list:
+        print(mst_product)
+        if mst_product["id"] == product_id:
+            product = mst_product
+            break
+    if product is None:
+        return "NG"
+
+    (order_id, response) = pay.request_payments(
+        product_name=product["name"],
+        amount=product["price"],
+        currency=product["currency"],
+        product_image_url=product["image_url"],
+    )
+    transaction_id = response["info"]["transactionId"]
+    redirect_url = response["info"]["paymentUrl"]["web"]
+    return redirect(redirect_url)
+
 @app.route("/pay/reserve", methods=['POST'])
 def pay_reserve():
     mst_dics_list = csvreader.loadMasterData()
