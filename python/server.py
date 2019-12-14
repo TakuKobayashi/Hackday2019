@@ -1,6 +1,8 @@
 # coding:utf-8
 
 from flask import Flask, render_template, request, jsonify, send_file, redirect
+from flask_cors import CORS
+
 from line_pay import LinePay
 import uuid
 from gevent import pywsgi
@@ -29,10 +31,15 @@ pay = LinePay(channel_id=LINE_PAY_CHANNEL_ID, channel_secret=LINE_PAY_CHANNEL_SE
 serialio = SerialIO()
 
 app = Flask(__name__, static_folder="./templates/products/static", template_folder="./templates")
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def index():
   return render_template('products/index.html')
+
+@app.route("/api/mst/products", methods=["GET"])
+def mst_products():
+    return jsonify(csvreader.loadMasterData())
 
 @app.route("/videochat", methods=["GET"])
 def videochat():
