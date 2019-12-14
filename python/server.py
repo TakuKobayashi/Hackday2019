@@ -7,6 +7,7 @@ from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 import json
 import serialio
+import csvreader
 
 import os
 from os.path import join, dirname
@@ -32,37 +33,46 @@ def index():
 
 @app.route("/videochat", methods=["GET"])
 def videochat():
-  return render_template('videochat.html')
+    return render_template('videochat.html')
 
 @app.route("/payment", methods=['GET'])
 def payment():
-  return render_template('payment.html')
+    return render_template('payment.html')
 
 @app.route("/serial", methods=['GET'])
 def serial():
-  return serialio.send("F\n")
+    return serialio.send("F\n")
+
+@app.route("/images/mst/<path:path>")
+def products_images(path):
+    fullpath = "./images/mst/" + path
+    return send_file(fullpath, mimetype='image/png')
 
 @app.route("/pay/reserve", methods=['POST'])
 def pay_reserve():
-  product_name = "チョコレート"
-  amount = 1
-  currency = "JPY"
+    mst_dics_list = csvreader.loadMasterData()
 
-  (order_id, response) = pay.request_payments(product_name=product_name, amount=amount, currency=currency)
-  print(response["returnCode"])
-  print(response["returnMessage"])
+    (order_id, response) = pay.request_payments(
+        product_name=mst_dics_list[0]["name"],
+        amount=mst_dics_list[0]["price"],
+        currency=mst_dics_list[0]["currency"],
+        product_image_url=mst_dics_list[0]["image_url"],
+    )
+    print(response["returnCode"])
+    print(response["returnMessage"])
+    print(response["info"])
 
-  transaction_id = response["info"]["transactionId"]
-  print(order_id, transaction_id, product_name, amount, currency)
-  redirect_url = response["info"]["paymentUrl"]["web"]
-  return redirect(redirect_url)
+    transaction_id = response["info"]["transactionId"]
+    print(order_id, transaction_id)
+    redirect_url = response["info"]["paymentUrl"]["web"]
+    return redirect(redirect_url)
 
 
 @app.route("/pay/confirm", methods=['GET'])
 def pay_confirm():
-  transaction_id = request.args.get('transactionId')
-  print(transaction_id)
-  return "Payment successfully finished."
+    transaction_id = request.args.get('transactionId')
+    print(transaction_id)
+    return "Payment successfully finished."
 
 @app.route('/pipe')
 def pipe():
@@ -77,8 +87,8 @@ def pipe():
             ws.send(json.dumps({message: message}))
 
 if __name__ == "__main__":
-  app.debug = True
-  app.host = '0.0.0.0'
-  app.threaded = True
-  server = pywsgi.WSGIServer(("", 5000), app, handler_class=WebSocketHandler)
-  server.serve_forever()
+    app.debug = True
+    app.host = '0.0.0.0'
+    app.threaded = True
+    server = pywsgi.WSGIServer(("", 5000), app, handler_class=WebSocketHandler)
+    server.serve_forever()
