@@ -21,7 +21,7 @@ load_dotenv(dotenv_path)
 LINE_PAY_URL = 'https://sandbox-api-pay.line.me'
 LINE_PAY_CHANNEL_ID = os.environ.get("LINE_PAY_CHANNEL_ID")
 LINE_PAY_CHANNEL_SECRET = os.environ.get("LINE_PAY_CHANNEL_SECRET_KEY")
-LINE_PAY_CONFIRM_URL = 'https://ec063ea0.ngrok.io/pay/confirm'
+LINE_PAY_CONFIRM_URL = os.environ.get("NGROK_ROOT_URL") + '/pay/confirm'
 pay = LinePay(channel_id=LINE_PAY_CHANNEL_ID, channel_secret=LINE_PAY_CHANNEL_SECRET,
               line_pay_url=LINE_PAY_URL, confirm_url=LINE_PAY_CONFIRM_URL)
 
