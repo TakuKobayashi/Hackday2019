@@ -6,7 +6,7 @@ import uuid
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 import json
-import smtplib
+import serialio
 
 import os
 from os.path import join, dirname
@@ -38,6 +38,10 @@ def videochat():
 def payment():
   return render_template('payment.html')
 
+@app.route("/serial", methods=['GET'])
+def serial():
+  return serialio.send("F\n")
+
 @app.route("/pay/reserve", methods=['POST'])
 def pay_reserve():
   product_name = "チョコレート"
@@ -57,6 +61,7 @@ def pay_reserve():
 @app.route("/pay/confirm", methods=['GET'])
 def pay_confirm():
   transaction_id = request.args.get('transactionId')
+  print(transaction_id)
   return "Payment successfully finished."
 
 @app.route('/pipe')
