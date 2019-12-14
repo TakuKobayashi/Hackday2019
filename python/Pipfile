@@ -12,6 +12,9 @@ gevent-websocket = "*"
 python-dotenv = "*"
 opencv-python = "*"
 pyserial = "*"
+urllib3 = "*"
+qrcode = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
