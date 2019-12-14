@@ -6,8 +6,9 @@ import uuid
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 import json
-import serialio
+from serialio import SerialIO
 import csvreader
+import atexit
 
 import os
 from os.path import join, dirname
@@ -24,6 +25,8 @@ LINE_PAY_CHANNEL_SECRET = os.environ.get("LINE_PAY_CHANNEL_SECRET_KEY")
 LINE_PAY_CONFIRM_URL = os.environ.get("NGROK_ROOT_URL") + '/pay/confirm'
 pay = LinePay(channel_id=LINE_PAY_CHANNEL_ID, channel_secret=LINE_PAY_CHANNEL_SECRET,
               line_pay_url=LINE_PAY_URL, confirm_url=LINE_PAY_CONFIRM_URL)
+
+serialio = SerialIO()
 
 app = Flask(__name__)
 
@@ -87,6 +90,11 @@ def pipe():
             ws.send(json.dumps({message: message}))
 
 if __name__ == "__main__":
+    # flaskがkillされた時に呼ぶ
+    def close_running_threads():
+        serialio.close()
+    atexit.register(close_running_threads)
+
     app.debug = True
     app.host = '0.0.0.0'
     app.threaded = True
