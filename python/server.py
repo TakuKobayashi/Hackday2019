@@ -28,11 +28,11 @@ pay = LinePay(channel_id=LINE_PAY_CHANNEL_ID, channel_secret=LINE_PAY_CHANNEL_SE
 
 serialio = SerialIO()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./templates/products/static", template_folder="./templates")
 
 @app.route("/", methods=["GET"])
 def index():
-  return render_template('index.html', title='input words page')
+  return render_template('products/index.html')
 
 @app.route("/videochat", methods=["GET"])
 def videochat():
