@@ -10,6 +10,8 @@ Flask = "*"
 gevent = "*"
 gevent-websocket = "*"
 python-dotenv = "*"
+opencv-python = "*"
+pyserial = "*"
 
 [requires]
 python_version = "3.7"
