@@ -1,6 +1,7 @@
 # coding:utf-8
 
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, redirect
+from line_pay import LinePay
 import uuid
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
@@ -16,11 +17,47 @@ load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
+LINE_PAY_URL = 'https://sandbox-api-pay.line.me'
+LINE_PAY_CHANNEL_ID = os.environ.get("LINE_PAY_CHANNEL_ID")
+LINE_PAY_CHANNEL_SECRET = os.environ.get("LINE_PAY_CHANNEL_SECRET_KEY")
+LINE_PAY_CONFIRM_URL = 'https://ec063ea0.ngrok.io/pay/confirm'
+pay = LinePay(channel_id=LINE_PAY_CHANNEL_ID, channel_secret=LINE_PAY_CHANNEL_SECRET,
+              line_pay_url=LINE_PAY_URL, confirm_url=LINE_PAY_CONFIRM_URL)
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def index():
   return render_template('index.html', title='input words page')
+
+@app.route("/videochat", methods=["GET"])
+def videochat():
+  return render_template('videochat.html')
+
+@app.route("/payment", methods=['GET'])
+def payment():
+  return render_template('payment.html')
+
+@app.route("/pay/reserve", methods=['POST'])
+def pay_reserve():
+  product_name = "チョコレート"
+  amount = 1
+  currency = "JPY"
+
+  (order_id, response) = pay.request_payments(product_name=product_name, amount=amount, currency=currency)
+  print(response["returnCode"])
+  print(response["returnMessage"])
+
+  transaction_id = response["info"]["transactionId"]
+  print(order_id, transaction_id, product_name, amount, currency)
+  redirect_url = response["info"]["paymentUrl"]["web"]
+  return redirect(redirect_url)
+
+
+@app.route("/pay/confirm", methods=['GET'])
+def pay_confirm():
+  transaction_id = request.args.get('transactionId')
+  return "Payment successfully finished."
 
 @app.route('/pipe')
 def pipe():
