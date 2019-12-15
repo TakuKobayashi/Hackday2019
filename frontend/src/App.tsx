@@ -89,7 +89,7 @@ class App extends React.Component<{}, ProductsState> {
             />
           </div>
           <div>
-            <QRCode value={process.env.REACT_APP_API_ROOT_URL + '/pay/product/' + product.id} />
+            <QRCode value={"https://" + process.env.REACT_APP_API_ROOT_HOST + '/pay/product/' + product.id} />
           </div>
         </Modal>
       </Card>
