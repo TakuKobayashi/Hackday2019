@@ -1,2 +1,7 @@
 id,name,price,currency,image_url
-1,Arduino Uno R3,3300,JPY,https://d2air1d4eqhwg2.cloudfront.net/images/789/500x500/1ac46a04-b77c-4471-b579-7f55d1d4c203.jpg
+1,Arduino Uno R3純正,3300,JPY,https://d2air1d4eqhwg2.cloudfront.net/images/789/500x500/1ac46a04-b77c-4471-b579-7f55d1d4c203.jpg
+2,Uno R3互換機,450,JPY,https://photos.google.com/share/AF1QipOF7oEYgZV3yD33s67AULCdhNv3H0nvnGG3lNi9IdC50nNfD_d_hE-s5paQZf-4Qw/photo/AF1QipNp-Gine4IP0Rw3g1IEjD8Sz5nxcyECLK8Q0u4A?key=YlRwU3RNenRSSHdWVTVQQjZSR24xOXJYM0p0SUpB
+3,MEGA 2560互換機,1200,JPY,https://photos.google.com/share/AF1QipOF7oEYgZV3yD33s67AULCdhNv3H0nvnGG3lNi9IdC50nNfD_d_hE-s5paQZf-4Qw/photo/AF1QipORt0ZLXdq8zkoQUan3s3E8gv38U2Ie4rRuNmsN?key=YlRwU3RNenRSSHdWVTVQQjZSR24xOXJYM0p0SUpB
+4,Sipeed MAiXduino,3300,JPY,https://photos.google.com/share/AF1QipOF7oEYgZV3yD33s67AULCdhNv3H0nvnGG3lNi9IdC50nNfD_d_hE-s5paQZf-4Qw/photo/AF1QipObMPK0b5zpIN7OxK2nDxIueuW-PChvl_kduU7U?key=YlRwU3RNenRSSHdWVTVQQjZSR24xOXJYM0p0SUpB
+5,LEDワイヤー,800,JPY,
+6,振動で光るLED,600,JPY,
