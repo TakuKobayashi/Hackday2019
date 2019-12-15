@@ -11,7 +11,7 @@ const QRCode = require('qrcode.react');
 interface ProductsState {
   activePage: number;
   products: Product[],
-  isOpen: boolean,
+  openNumber: number | undefined,
 }
 
 class App extends React.Component<{}, ProductsState> {
@@ -20,7 +20,7 @@ class App extends React.Component<{}, ProductsState> {
     this.state = {
       activePage: 1,
       products: [],
-      isOpen: false,
+      openNumber: undefined,
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.loadContents();
@@ -37,8 +37,8 @@ class App extends React.Component<{}, ProductsState> {
       // listen to data sent from the websocket server
       const message = JSON.parse(evt.data)
       console.log(message)
-      if(this.state.isOpen){
-        this.setState({isOpen: false});
+      if(this.state.openNumber){
+        this.setState({openNumber: undefined});
       }
     }
 
@@ -69,7 +69,7 @@ class App extends React.Component<{}, ProductsState> {
             <div className="rainbow-font-size-text_large rainbow-color_dark-1">{product.price} {product.currency}</div>
             <Button
               label="購入する"
-              onClick={this.handleOnClick}
+              onClick={(e) => this.handleOnClick(product)}
               variant="brand"
               className="rainbow-m-around_medium"
             />
@@ -80,7 +80,7 @@ class App extends React.Component<{}, ProductsState> {
         <Modal
             id="modal-1"
             title={product.name}
-            isOpen={this.state.isOpen}
+            isOpen={this.state.openNumber === product.id}
             onRequestClose={this.handleOnClose}
         >
           <div className="rainbow-align-content_center">
@@ -96,12 +96,12 @@ class App extends React.Component<{}, ProductsState> {
     ));
   }
 
-  handleOnClick() {
-    return this.setState({ isOpen: true });
+  handleOnClick(product: Product) {
+    return this.setState({ openNumber: product.id });
   }
 
   handleOnClose() {
-    return this.setState({ isOpen: false });
+    return this.setState({ openNumber: undefined });
   }
 
   handleOnChange(event: React.MouseEvent<HTMLElement>, page: number) {

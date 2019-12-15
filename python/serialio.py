@@ -35,7 +35,7 @@ class SerialIO:
 
     def connection(self):
         try:
-            ser = serial.Serial('/dev/tty.usbserial-1420', 19200, timeout=None)
+            ser = serial.Serial('/dev/tty.usbserial-1430', 19200, timeout=None)
             return ser
         except serial.serialutil.SerialException as e:
             print(e)
