@@ -54,6 +54,10 @@ def payment():
 def serial():
     return serialio.send("F\n")
 
+@app.route("/commander", methods=['GET'])
+def commander():
+    return render_template('commander.html')
+
 @app.route("/images/mst/<path:path>")
 def products_images(path):
     fullpath = "./images/mst/" + path
