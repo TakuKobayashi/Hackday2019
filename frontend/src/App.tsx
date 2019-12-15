@@ -38,7 +38,7 @@ class App extends React.Component<{}, ProductsState> {
       const message = JSON.parse(evt.data)
       console.log(message)
       if(this.state.isOpen){
-        
+        this.setState({isOpen: false});
       }
     }
 

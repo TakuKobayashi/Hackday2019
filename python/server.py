@@ -33,6 +33,8 @@ serialio = SerialIO()
 app = Flask(__name__, static_folder="./templates/products/static", template_folder="./templates")
 CORS(app)
 
+ws = None
+
 @app.route("/", methods=["GET"])
 def index():
   return render_template('products/index.html')
@@ -112,6 +114,8 @@ def pay_reserve():
 def pay_confirm():
     transaction_id = request.args.get('transactionId')
     print(transaction_id)
+    if ws is not None:
+        ws.send(json.dumps({"action": "payment", "status": "success"}))
     return "Payment successfully finished."
 
 @app.route('/pipe')
@@ -124,7 +128,7 @@ def pipe():
             if message is None:
                 break
             print(message)
-            ws.send(json.dumps({message: message}))
+            ws.send(json.dumps({"message": message}))
 
 if __name__ == "__main__":
     # flaskがkillされた時に呼ぶ
