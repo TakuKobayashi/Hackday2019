@@ -24,10 +24,10 @@ class SerialIO:
             self.ser = self.connection()
             time.sleep(2)
             if self.ser is None:
-                return ""
+                return "NG"
         result = self.ser.write(message.encode())
         print(result)
-        return "ok"
+        return "OK"
 
     def close(self):
         if self.ser is not None:

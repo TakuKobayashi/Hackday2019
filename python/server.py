@@ -52,7 +52,10 @@ def payment():
 # 進むコマンド
 @app.route("/serial", methods=['GET'])
 def serial():
-    return serialio.send("F\n")
+    command = request.args.get('command')
+    print(command)
+    send_result = serialio.send(command + "\n")
+    return jsonify({"status": send_result})
 
 @app.route("/commander", methods=['GET'])
 def commander():

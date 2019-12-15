@@ -8,19 +8,35 @@
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <link href="jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <script src="jquery.toast.min.js"></script>
     <title>{{ title }}</title>
   </head>
   <body>
     <div class="container">
-      <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <div class="panel panel-info" >
-        <form action="/generate" method="post" >
-          <div class="form-group">
-            <textarea class="form-control" rows="15" id="sentence" name="sentence" placeholder="適当な文章を入力してください"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">画像作成</button>
-        </form>
-      </div>
+      <a href="/serial?command=F" class="btn btn-primary" role="button">前に進む(F)</a>
+      <a href="/serial?command=B" class="btn btn-secondary" role="button">後ろに下がる(B)</a>
+      <a href="/serial?command=R" class="btn btn-success" role="button">右に曲がる(R)</a>
+      <a href="/serial?command=L" class="btn btn-danger" role="button">左に曲がる(L)</a>
+      <a href="/serial?command=C" class="btn btn-warning" role="button">止まる?(C)</a>
+      <a href="/serial?command=0" class="btn btn-info" role="button">コマンド0(0)</a>
+      <a href="/serial?command=1" class="btn btn-dark" role="button">コマンド1(1)</a>
     </div>
   </body>
+  <script>
+    $(function(){
+      $('a').click(function(event){
+        console.log("OK")
+        var url = $(this).attr("href");
+        console.log(url)
+        $.ajax({
+          url: url,
+          success: function(result){
+            console.log(result)
+          }
+        });
+        event.preventDefault();
+      });
+    });
+  </script>
 </html>
