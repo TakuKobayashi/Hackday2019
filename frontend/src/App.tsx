@@ -15,6 +15,8 @@ interface ProductsState {
 }
 
 class App extends React.Component<{}, ProductsState> {
+  private PER_PAGE: number = 4;
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -57,8 +59,8 @@ class App extends React.Component<{}, ProductsState> {
 
   getContent() {
     const { activePage } = this.state;
-    const lastItem = activePage * 2;
-    const firstItem = lastItem - 2;
+    const lastItem = activePage * this.PER_PAGE;
+    const firstItem = lastItem - this.PER_PAGE;
     return this.state.products.slice(firstItem, lastItem).map((product) => (
       <Card
         title={product.name}
@@ -119,11 +121,12 @@ class App extends React.Component<{}, ProductsState> {
     | null
     | undefined {
     const page = this.state.activePage;
+    const pageCount = Math.ceil(this.state.products.length / this.PER_PAGE);
     return (
       <div>
         <div className="rainbow-p-around_xx-large rainbow-align-content_center rainbow-flex_column">
           <div className="rainbow-flex rainbow-justify_space-around rainbow-flex_wrap">{this.getContent()}</div>
-          <Pagination className="rainbow-m_auto" pages={6} activePage={page} onChange={this.handleOnChange} />
+          <Pagination className="rainbow-m_auto" pages={pageCount} activePage={page} onChange={this.handleOnChange} />
         </div>
       </div>
     );
