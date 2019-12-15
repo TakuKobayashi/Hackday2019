@@ -26,10 +26,29 @@ class App extends React.Component<{}, ProductsState> {
     this.loadContents();
     this.handleOnClick = this.handleOnClick.bind(this);
     this.handleOnClose = this.handleOnClose.bind(this);
+
+    const websocket = new WebSocket("ws://" + process.env.REACT_APP_API_ROOT_HOST + '/pipe')
+    websocket.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log('connected')
+    }
+
+    websocket.onmessage = evt => {
+      // listen to data sent from the websocket server
+      const message = JSON.parse(evt.data)
+      console.log(message)
+      if(this.state.isOpen){
+        
+      }
+    }
+
+    websocket.onclose = () => {
+      console.log('disconnected')
+    }
   }
 
   async loadContents(): Promise<Product[]> {
-    const res = await axios.get(process.env.REACT_APP_API_ROOT_URL + '/api/mst/products')
+    const res = await axios.get("//" + process.env.REACT_APP_API_ROOT_HOST + '/api/mst/products')
     this.setState({
       products: res.data,
     });
