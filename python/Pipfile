@@ -16,6 +16,7 @@ urllib3 = "*"
 qrcode = "*"
 pillow = "*"
 flask-cors = "*"
+kflash = "*"
 
 [requires]
 python_version = "3.7"
